@@ -16,11 +16,9 @@ namespace Day02
         {
             // Define the keypad layout
             var keypad = new[,] {
-                { "X", "X", "X", "X", "X" },
-                { "X", "1", "2", "3", "X" },
-                { "X", "4", "5", "6", "X" },
-                { "X", "7", "8", "9", "X" },
-                { "X", "X", "X", "X", "X" },
+                { "1", "2", "3" },
+                { "4", "5", "6" },
+                { "7", "8", "9" },
             };
 
             string keyCode = ExtractKeyCode(keypad, input, 2, 2);
@@ -31,14 +29,14 @@ namespace Day02
         {
             // Define the keypad layout
             var keypad = new[,] {
-                { "X","X","1","X","X" },
-                { "X","2","3","4","X" },
+                { " "," ","1"," "," " },
+                { " ","2","3","4"," " },
                 { "5","6","7","8","9" },
-                { "X","A","B","C","X" },
-                { "X","X","D","X","X" }
+                { " ","A","B","C"," " },
+                { " "," ","D"," "," " }
             };
 
-            string keyCode = ExtractKeyCode(keypad, input, 2, 0);
+            string keyCode = ExtractKeyCode(keypad, input, 3, 1);
             Console.WriteLine($"Part 2: {keyCode}");
         }
 
@@ -46,7 +44,14 @@ namespace Day02
         private static string ExtractKeyCode(string[,] keypad, string[] instructions, int startRow, int startCol)
         {
             string keyCode = "";
-            int row = startRow, col = startCol;
+
+            // Get the Height and Width lengths of the keypad array
+            int keypadHeight = keypad.GetLength(0);
+            int keypadWidth = keypad.GetLength(1);
+
+            // Check the start row and col are within the bounds of the keypad array
+            int row = 0 < startRow && startRow <= keypadHeight ? startRow - 1 : 0;
+            int col = 0 < startCol && startCol <= keypadWidth ? startCol - 1 : 0;
 
             foreach (var line in instructions)
             {
@@ -65,11 +70,11 @@ namespace Day02
                     }
 
                     // Check new row/col are within bounds of the keypad array
-                    if (newRow < 0 || newRow >= keypad.GetLength(0)) continue;
-                    if (newCol < 0 || newCol >= keypad.GetLength(0)) continue;
+                    if (newRow < 0 || newRow >= keypadHeight) continue;
+                    if (newCol < 0 || newCol >= keypadWidth) continue;
 
                     // Update row and col values
-                    if (keypad[newRow, newCol] != "X")
+                    if (keypad[newRow, newCol] != " ")
                     {
                         row = newRow;
                         col = newCol;
